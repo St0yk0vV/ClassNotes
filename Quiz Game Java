@@ -45,6 +45,7 @@ public class Main {
                     System.out.println("Incorrect. The correct answer is 11.");
                 }
                 break;
+
             default:
                 System.out.println("Invalid category choice.");
                 break;
