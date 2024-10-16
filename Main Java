@@ -1,0 +1,53 @@
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Please choose a category:");
+        System.out.println("1: Science");
+        System.out.println("2: History");
+        System.out.println("3: Sports");
+        System.out.print("Enter the number of your choice: ");
+
+        int category = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (category) {
+            case 1:
+                System.out.println("Science Question: What is the full meaning of DNA?");
+                System.out.print("Your answer: ");
+                String scienceAnswer = scanner.nextLine();
+                if (scienceAnswer.equalsIgnoreCase("Deoxyribonucleic acid")) {
+                    System.out.println("Correct! You earned 1 point.");
+                } else {
+                    System.out.println("Incorrect. The correct answer is deoxyribonucleic acid.");
+                }
+                break;
+
+            case 2:
+                System.out.println("History Question: Who was the first president of the United States?");
+                System.out.print("Your answer: ");
+                String historyAnswer = scanner.nextLine();
+                if (historyAnswer.equalsIgnoreCase("George Washington")) {
+                    System.out.println("Correct! You earned 1 point.");
+                } else {
+                    System.out.println("Incorrect. The correct answer is George Washington.");
+                }
+                break;
+
+            case 3:
+                System.out.println("Sports Question: How many players are there on a football team?");
+                System.out.print("Your answer: ");
+                String sportsAnswer = scanner.nextLine();
+                if (sportsAnswer.equals("11")) {
+                    System.out.println("Correct! You earned 1 point.");
+                } else {
+                    System.out.println("Incorrect. The correct answer is 11.");
+                }
+                break;
+            default:
+                System.out.println("Invalid category choice.");
+                break;
+        }
+    }
+}
