@@ -1,0 +1,81 @@
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        int number = 5;
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Guess a number between 1 and 10.");
+        System.out.println("You have 3 guesses");
+        System.out.println("Attempt 1: ");
+
+        int guess_1 = scanner.nextInt();
+        switch (guess_1) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                System.out.println("The secret number is higher than " + guess_1);
+                System.out.println("You have 2 guesses left.");
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                System.out.println("The secret number is lower than " + guess_1);
+                System.out.println("You have 2 guesses left.");
+                break;
+            case 5:
+                System.out.println("Congratulations! Your guess is correct!");
+                return;
+        }
+        System.out.println("Attempt 2: ");
+        int guess_2 = scanner.nextInt();
+        switch (guess_2) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                System.out.println("The secret number is higher than " + guess_2);
+                System.out.println("You have 1 guesses left.");
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                System.out.println("The secret number is lower than " + guess_2);
+                System.out.println("You have 1 guesses left.");
+                break;
+            case 5:
+                System.out.println("Congratulations! Your guess is correct!");
+                return;
+        }
+
+        System.out.println("Attempt 3:");
+        int guess_3 = scanner.nextInt();
+        switch (guess_3) {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                System.out.println("The secret number is higher than " + guess_3);
+                System.out.println("You have 0 guesses left.");
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                System.out.println("The secret number is lower than " + guess_3);
+                System.out.println("You have 0 guesses left.");
+                break;
+            case 5:
+                System.out.println("Congratulations! Your guess is correct!");
+                return;
+        }
+
+        System.out.println("You don't have any attempts left. The secret number was " + number);
+    }
+}
