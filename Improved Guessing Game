@@ -1,0 +1,48 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(100) + 1;
+        Scanner scanner = new java.util.Scanner(System.in);
+        int attempts = 0;
+        boolean hasGuessedCorrectly = false;
+
+        System.out.println("Welcome to the Improved Guessing Game!");
+        System.out.println("I have picked a random number between 1 and 100. Can you guess is?");
+        System.out.println("Type 'quit' anytime to exit the game.");
+
+        while (!hasGuessedCorrectly) {
+            System.out.print("Enter your guess: ");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("quit")) {
+                System.out.println("Thanks for playing! The correct number was " + randomNumber + ".");
+                break;
+            }
+
+            int guess = Integer.parseInt(input);
+            attempts++;
+
+            if (guess < 1 || guess > 100) {
+                System.out.println("Please enter a number between 1 and 100.");
+            } else if (guess < randomNumber) {
+                System.out.println("The secret number is higher than " + guess + "! Try again.");
+            } else if (guess > randomNumber) {
+                System.out.println("The secret number is lower than " + guess + "! Try again.");
+            } else {
+                hasGuessedCorrectly = true;
+                System.out.println("Congratulations! You have guessed the number correctly in " + attempts + " attempts.");
+            }
+
+            if (!hasGuessedCorrectly && attempts == 10) {
+                if (randomNumber % 2 == 0) {
+                    System.out.println("Hint: The number is even.");
+                } else {
+                    System.out.println("Hint: The number is odd.");
+                }
+            }
+        }
+    }
+}
