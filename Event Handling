@@ -36,7 +36,9 @@ public class Main {
 
            public void actionPerformed(ActionEvent e){
                int counter = Integer.parseInt(showCLicks.getText());
-               counter--;
+               if(counter>0) {
+                   counter--;
+               }
                showCLicks.setText(String.valueOf(counter));
            }
        });
