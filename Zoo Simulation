@@ -1,0 +1,113 @@
+public class Main {
+    public static void main(String[] args) {
+        Habitat savannah = new Habitat("Savannah", 1000, 20.0);
+        Habitat rainforest = new Habitat("Rainforest", 3000, 15.0);
+
+        Staff vasil = new Staff("Vasil", "Zookeeper");
+        Staff ivan = new Staff("Ivan", "Specialist");
+
+        vasil.assignStaff(savannah);
+        ivan.assignStaff(rainforest);
+
+        Animal lion = new Animal("Simba", "Lion", 8, savannah);
+        Animal jaguar = new Animal("Ralph", "Jaguar", 10, rainforest);
+        Animal tiger = new Animal("Kamen", "Tiger", 7, savannah);
+        Animal capybara = new Animal("Alex", "Capibara", 11, rainforest);
+
+        Zoo myZoo = new Zoo();
+        myZoo.addAnimal1(lion);
+        myZoo.addAnimal2(jaguar);
+        myZoo.addAnimal3(tiger);
+        myZoo.addAnimal4(capybara);
+
+        lion.eat("meat", vasil);
+        jaguar.eat("seeds", ivan);
+        tiger.eat("meat", vasil);
+        capybara.eat("seeds", ivan);
+
+    }
+    static class Animal {
+        private String name;
+        private String species;
+        private int age;
+        private Habitat habitat;
+
+        public Animal(String name, String species, int age, Habitat habitat) {
+            this.name = name;
+            this.species = species;
+            this.age = age;
+            this.habitat = habitat;
+        }
+
+        public void eat(String food, Staff staff) {
+            System.out.println(this.name + " is fed " + food + " by " + staff.getName());
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public Habitat getHabitat() {
+            return habitat;
+        }
+    }
+
+    static class Habitat {
+        private String type;
+        private double size;
+        private double temperature;
+
+        public Habitat(String type, double size, double temperature) {
+            this.type = type;
+            this.size = size;
+            this.temperature = temperature;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+
+    static class Zoo {
+        private Animal a1;
+        private Animal a2;
+        private Animal a3;
+        private Animal a4;
+
+        public void addAnimal1(Animal animal) {
+            this.a1 = animal;
+        }
+
+        public void addAnimal2(Animal animal) {
+            this.a2 = animal;
+        }
+
+        public void addAnimal3(Animal animal) {
+            this.a3 = animal;
+        }
+
+        public void addAnimal4(Animal animal) {
+            this.a4 = animal;
+        }
+    }
+
+    static class Staff {
+        private String name;
+        private String role;
+        private Habitat assignedHabitat;
+
+        public Staff(String name, String role) {
+            this.name = name;
+            this.role = role;
+        }
+
+        public void assignStaff(Habitat habitat) {
+            this.assignedHabitat = habitat;
+            System.out.println(this.name + " is assigned to " + habitat.getType());
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+}
