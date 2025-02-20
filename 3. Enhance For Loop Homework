@@ -1,0 +1,95 @@
+import java.util.Scanner;
+
+public class Main {
+    private static String[] bookTitles = {"The Great Gatsby", "1984", "Don Quixote", "The Lord of the Rings"};
+    private static double[] bookPrices = {9.99, 8.99, 13.99, 18.99};
+    private static int[] bookQuantities = {3, 4, 2, 8, 5};
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        boolean isRunning = true;
+
+        while (isRunning) {
+            System.out.println("\n--- Online Bookstore ---");
+            System.out.println("1. Display Available Books");
+            System.out.println("2. Search for a Book");
+            System.out.println("3. Purchase a Book");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    displayBooks();
+                    break;
+                case 2:
+                    searchBook(scanner);
+                    break;
+                case 3:
+                    purchaseBook(scanner);
+                    break;
+                case 4:
+                    isRunning = false;
+                    System.out.println("Thank you for visiting the bookstore!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+
+        scanner.close();
+    }
+
+    public static void displayBooks() {
+        System.out.println("\nAvailable Books:");
+        for (int i = 0; i < bookTitles.length; i++) {
+            System.out.println((i + 1) + ". " + bookTitles[i] + " - $" + bookPrices[i] + " (" + bookQuantities[i] + " in stock)");
+        }
+    }
+
+    public static void searchBook(Scanner scanner) {
+        System.out.print("\nEnter book title to search: ");
+        String query = scanner.nextLine().toLowerCase();
+        boolean found = false;
+
+        System.out.println("Search Results:");
+        for (int i = 0; i < bookTitles.length; i++) {
+            if (bookTitles[i].toLowerCase().contains(query)) {
+                System.out.println((i + 1) + ". " + bookTitles[i] + " - $" + bookPrices[i] + " (" + bookQuantities[i] + " in stock)");
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("No books match your search.");
+        }
+    }
+
+    public static void purchaseBook(Scanner scanner) {
+        displayBooks();
+        System.out.print("Enter the book number to purchase: ");
+        int bookIndex = scanner.nextInt() - 1;
+
+        if (bookIndex >= 0 && bookIndex < bookTitles.length) {
+            if (bookQuantities[bookIndex] > 0) {
+                System.out.println("You selected: " + bookTitles[bookIndex]);
+                System.out.println("Price: $" + bookPrices[bookIndex]);
+                System.out.print("Enter payment amount: $");
+                double payment = scanner.nextDouble();
+
+                if (payment >= bookPrices[bookIndex]) {
+                    bookQuantities[bookIndex]--;
+                    double change = payment - bookPrices[bookIndex];
+                    System.out.println("Purchase successful! Your change: $" + change);
+                } else {
+                    System.out.println("Insufficient funds. Purchase cancelled.");
+                }
+            } else {
+                System.out.println("Sorry, this book is out of stock.");
+            }
+        } else {
+            System.out.println("Invalid selection. Please try again.");
+        }
+    }
+}
