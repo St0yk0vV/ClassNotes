@@ -1,0 +1,124 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner read = new Scanner(System.in);
+
+        Car[] carArray = {
+                new Car("Toyota", "Camry", 2022, 25000, false),
+                new Car("Honda", "Civic", 2016, 15000, true),
+                new Car("Ford", "Fusion", 2019, 20000, false),
+                new Car("Mercedes", "Benz", 2022, 50000, true)
+        };
+
+        int choice = 0;
+        do {
+            System.out.println("\nCar Gallery Menu:");
+            System.out.println("1. Display all cars");
+            System.out.println("2. Display available (not leased) cars");
+            System.out.println("3. Find and display the most expensive car");
+            System.out.println("4. Calculate and display the average price of all cars");
+            System.out.println("5. Lease a car");
+            System.out.println("0. Exit");
+            System.out.print("Enter your choice: ");
+            choice = read.nextInt();
+
+            switch (choice) {
+                case 1:
+                    displayAll(carArray);
+                    break;
+                case 2:
+                    displayAvailableCars(carArray);
+                    break;
+                case 3:
+                    Car expensiveCar = mostExpensive(carArray);
+                    System.out.println("Most expensive car:");
+                    expensiveCar.displayInfo();
+                    break;
+                case 4:
+                    double avgPrice = averagePrice(carArray);
+                    System.out.printf("Average price of all cars: $%.2f%n", avgPrice);
+                    break;
+                case 5:
+                    System.out.print("Enter the index of the car to lease (0 to " + (carArray.length - 1) + "): ");
+                    int leaseChoice = read.nextInt();
+                    leaseCar(carArray, leaseChoice);
+                    break;
+                case 0:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        } while (choice != 0);
+
+    }
+
+    public static void displayAll(Car[] carArray) {
+        System.out.println("\nAll Cars in the Gallery:");
+        for (Car car : carArray) {
+            car.displayInfo();
+        }
+    }
+
+    public static void displayAvailableCars(Car[] carArray) {
+        System.out.println("\nAvailable Cars (Not Leased):");
+        for (Car car : carArray) {
+            if (!car.isLeased) {
+                car.displayInfo();
+            }
+        }
+    }
+
+    public static Car mostExpensive(Car[] carArray) {
+        Car mostExpensiveCar = carArray[0];
+        for (Car car : carArray) {
+            if (car.price > mostExpensiveCar.price) {
+                mostExpensiveCar = car;
+            }
+        }
+        return mostExpensiveCar;
+    }
+
+    public static double averagePrice(Car[] carArray) {
+        double totalPrice = 0;
+        for (Car car : carArray) {
+            totalPrice += car.price;
+        }
+        return totalPrice / carArray.length;
+    }
+
+    public static void leaseCar(Car[] carArray, int leaseChoice) {
+        if (leaseChoice >= 0 && leaseChoice < carArray.length) {
+            if (!carArray[leaseChoice].isLeased) {
+                carArray[leaseChoice].isLeased = true;
+                System.out.println("Car has been leased successfully.");
+            } else {
+                System.out.println("Car is already leased.");
+            }
+        } else {
+            System.out.println("Invalid car index.");
+        }
+    }
+}
+
+class Car {
+    String make;
+    String model;
+    int year;
+    double price;
+    boolean isLeased;
+
+    public Car(String make, String model, int year, double price, boolean isLeased) {
+        this.make = make;
+        this.model = model;
+        this.year = year;
+        this.price = price;
+        this.isLeased = isLeased;
+    }
+
+    public void displayInfo() {
+        System.out.printf("%s, Model: %s, Year: %d, Price: $%.2f, Leased: %b%n",
+                make, model, year, price, isLeased);
+    }
+}
