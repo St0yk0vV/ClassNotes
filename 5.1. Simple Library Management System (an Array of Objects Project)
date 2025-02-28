@@ -1,78 +1,4 @@
 import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
-        Book[] books = {
-                new Book("The Great Gatsby", "F. Scott Fitzgerald", 1925),
-                new Book("Harry Potter", "J.K. Rowling", 1997),
-                new Book("Don Quixote", "Miguel de Cervantes", 1612, "Ivan Ivanov")
-        };
-
-        displayLibrary(books);
-        borrowBook(books, scan);
-        returnBook(books, "Don Quixote");
-
-        int index = findBookByTitle(books, "The Great Gatsby");
-        if (index != -1) {
-            System.out.println("The index of the book 'The Great Gatsby' is: " + index);
-        } else {
-            System.out.println("Book isn't in our database.");
-        }
-
-        System.out.println("\nUpdating info on book 3...");
-        books[2].updateBookInfo("Don Quixote", "Miguel de Cervantes", 2025);
-        System.out.println("Updated Info on Book 3:");
-        System.out.println(books[2].getDetails());
-
-        displayLibrary(books);
-    }
-
-    public static void displayLibrary(Book[] books) {
-        System.out.println("\n----- Current Inventory -----");
-        for (Book book : books) {
-            System.out.println(book.getDetails());
-        }
-    }
-
-    public static void borrowBook(Book[] books, Scanner scan) {
-        System.out.println("\nWhich book do you want to borrow? [1-3]: ");
-        int bookRequested = scan.nextInt();
-        scan.nextLine();
-        if (bookRequested < 1 || bookRequested > books.length) {
-            System.out.println("Invalid book number.");
-            return;
-        }
-        System.out.println("Name: ");
-        String name = scan.nextLine();
-        books[bookRequested - 1].borrowBook(name);
-        System.out.println("Book borrowed successfully!\n");
-    }
-
-    public static void returnBook(Book[] books, String searchTitle) {
-        if (searchTitle == null || searchTitle.isEmpty()) {
-            System.out.println("No title entered.\n");
-            return;
-        }
-        int index = findBookByTitle(books, searchTitle);
-        if (index != -1) {
-            books[index].returnBook();
-            System.out.println("Book returned successfully!\n");
-        } else {
-            System.out.println("The book doesn't exist.\n");
-        }
-    }
-
-    public static int findBookByTitle(Book[] books, String title) {
-        for (int i = 0; i < books.length; i++) {
-            if (books[i].getTitle().equalsIgnoreCase(title)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-}
-
 class Book {
     private String title;
     private String author;
@@ -94,8 +20,8 @@ class Book {
     }
 
     public String getDetails() {
-        return String.format("Title: %s | Author: %s | Year Published: %d | Borrower: %s",
-                title, author, yearPublished, borrowerName == null ? "None" : borrowerName);
+        return "Title: " + title + ", Author: " + author + ", Year Published: " + yearPublished +
+                (borrowerName == null ? " (Available)" : " (Borrowed by: " + borrowerName + ")");
     }
 
     public void updateBookInfo(String newTitle, String newAuthor, int newYearPublished) {
@@ -107,24 +33,110 @@ class Book {
     public void borrowBook(String borrowerName) {
         if (this.borrowerName == null) {
             this.borrowerName = borrowerName;
+            System.out.println("Book borrowed successfully.");
         } else {
-            System.out.println("Book is already borrowed by " + this.borrowerName + ".");
+            System.out.println("Book is already borrowed.");
         }
     }
 
     public void returnBook() {
         if (this.borrowerName != null) {
             this.borrowerName = null;
+            System.out.println("Book returned successfully.");
         } else {
-            System.out.println("Book is not currently borrowed.");
+            System.out.println("Book was not borrowed.");
         }
+    }
+
+    public String getBorrowerName() {
+        return borrowerName;
     }
 
     public String getTitle() {
         return title;
     }
+}
 
-    public String getBorrowerName() {
-        return borrowerName;
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Book[] books = {
+                new Book("The Great Gatsby", "F. Scott Fitzgerald", 1925),
+                new Book("Harry Potter", "J.K. Rowling", 1997),
+                new Book("Don Quixote", "Miguel de Cervantes", 1612, "Ivan Ivanov")
+        };
+
+        while (true) {
+            System.out.println("\nLibrary Management System:");
+            System.out.println("1. Display Library Inventory");
+            System.out.println("2. Borrow a Book");
+            System.out.println("3. Return a Book");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    displayLibrary(books);
+                    break;
+                case 2:
+                    borrowBook(books, scanner);
+                    break;
+                case 3:
+                    System.out.print("Enter the title of the book to return: ");
+                    String returnTitle = scanner.nextLine();
+                    returnBook(books, returnTitle);
+                    break;
+                case 4:
+                    System.out.println("Exiting the system. Goodbye!");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+
+    public static void displayLibrary(Book[] books) {
+        System.out.println("\nLibrary Inventory:");
+        for (Book book : books) {
+            System.out.println(book.getDetails());
+        }
+    }
+
+    public static void borrowBook(Book[] books, Scanner scanner) {
+        System.out.print("Enter the title of the book to borrow: ");
+        String title = scanner.nextLine();
+        int bookIndex = findBookByTitle(books, title);
+
+        if (bookIndex != -1) {
+            System.out.print("Enter your name: ");
+            String borrowerName = scanner.nextLine();
+            books[bookIndex].borrowBook(borrowerName);
+        } else {
+            System.out.println("Book not found.");
+        }
+    }
+
+    public static void returnBook(Book[] books, String searchTitle) {
+        int bookIndex = findBookByTitle(books, searchTitle);
+
+        if (bookIndex != -1) {
+            books[bookIndex].returnBook();
+        } else {
+            System.out.println("Book not found.");
+        }
+    }
+
+    public static int findBookByTitle(Book[] books, String title) {
+        for (int i = 0; i < books.length; i++) {
+            if (books[i].getTitle().equalsIgnoreCase(title)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
