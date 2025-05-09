@@ -1,0 +1,73 @@
+import java.io.*;
+import java.util.*;
+
+
+public class Main {
+   public static void main(String[] args) {
+       Scanner scanner = new Scanner(System.in);
+       Random random = new Random();
+
+
+       System.out.print("Enter your name: ");
+       String userName = scanner.nextLine();
+       String fileName = userName.toLowerCase() + "-answers.txt";
+
+
+       List<String> questionsAndAnswers = new ArrayList<>();
+       int numQuestions = 5;
+
+
+       System.out.println(userName + ", please, answer the following arithmetic questions:");
+
+
+       for (int i = 1; i <= numQuestions; i++) {
+           int num1 = random.nextInt(100);
+           int num2 = random.nextInt(100);
+           char operator = random.nextBoolean() ? '+' : '-';
+
+
+           if (operator == '-') {
+               if (num1 < num2) {
+                   int swap = num1;
+                   num1 = num2;
+                   num2 = swap;
+               }
+           }
+
+
+           int correctAnswer = operator == '+' ? (num1 + num2) : (num1 - num2);
+
+
+           System.out.printf("Question %d: %d %c %d = ?%n", i, num1, operator, num2);
+           int userAnswer = scanner.nextInt();
+
+
+           boolean isCorrect = (userAnswer == correctAnswer);
+           String result = isCorrect ? "Correct" : "Wrong";
+           System.out.println(result);
+
+
+           questionsAndAnswers.add(String.format("%d %c %d = %d (Your answer: %d) - %s",
+                   num1, operator, num2, correctAnswer, userAnswer, result));
+       }
+
+
+       writeResultsToFile(fileName, questionsAndAnswers);
+
+
+       System.out.println("Your answers have been saved to " + fileName);
+       scanner.close();
+   }
+
+
+   private static void writeResultsToFile(String fileName, List<String> questionsAndAnswers) {
+       try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+           for (String entry : questionsAndAnswers) {
+               writer.write(entry);
+               writer.newLine();
+           }
+       } catch (IOException e) {
+           System.err.println("An error occurred while writing to the file: " + e.getMessage());
+       }
+   }
+}
